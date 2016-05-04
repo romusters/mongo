@@ -10,17 +10,17 @@ import logging
 # from crossd import crossdomain
 from flask.ext.cors import CORS, cross_origin
 
+import mongo
+
 logging.basicConfig(stream=sys.stdout, level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 logger = logging.getLogger(__name__)
 
-def connect():
-	client = MongoClient("localhost", 27017)
-	db = client['data']
-	return db
+m = mongo.mongo()
+
 
 app = Flask(__name__)
 
-handle = connect()
+handle = m.db
 
 app.secret_key = 'abcdef'
 login_manager = flask_login.LoginManager()
@@ -112,9 +112,27 @@ def index():
 	logger.info(flask.ext.login.current_user.id)
 	return render_template('index.html', userinputs=userinputs)
 
-@app.route("/annotation", methods=['POST'])
+@app.route("/annotation", methods=['GET'])
 def annotation():
-	return
+	d = {"a": flask.ext.login.current_user.id}
+	return flask.jsonify(d)
+
+@app.route("/label", methods=['POST'])
+def label():
+	user = flask.ext.login.current_user.id
+
+	data = request.get_json()
+
+	id = '5728b6b1c3dc0b196a3128db'
+
+	logger.info(user)
+	logger.info(data['agreement'])
+	logger.info(data['label'])
+
+	m.addlabel(id, user, data['label'])
+	m.addagreement(id, user, data['agreement'])
+
+	return "200"
 
 @app.route("/write", methods=['POST'])
 def write():
