@@ -33,6 +33,10 @@ class mongo():
 		for tweet in self.db['tweets'].find():
 			self.db[user].insert(tweet)
 
+	def get_tweet(self, user):
+		data = self.db[user].find({'label': {'$exists': False}})[0]
+		return data['tweets'], str(data['_id'])
+
 # 	def test():
 # 		cp_labels = None
 # 		for e in self.db.find({'user': user}):

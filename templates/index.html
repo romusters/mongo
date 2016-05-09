@@ -4,12 +4,24 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
     <script>
+        var id;
         $(document).ready(
-                console.log($.getJSON('/annotation'))
 
-
+            function() {
+                $.get($SCRIPT_ROOT + '/gettweet', function (data) {
+                    console.log(data);
+                    var data = JSON.parse(data)
+                    id = data['id']
+                    console.log(id)
+                    $('input[name="tweet"]').val(data['tweet']);
+                })
+            }
         );
+        console.log(id)
     </script>
 </head>
 
@@ -23,10 +35,11 @@
     <script>
         function fnul(val){
             console.log("button was pressed");
+            console.log($('#label').serializeArray()[0].value);
             $.ajax({
               type: "POST",
               url: "/label",
-              data: JSON.stringify({"label": "test", "agreement": 0}),
+              data: JSON.stringify({"label": $('#label').serializeArray()[0].value, "agreement": val, "id": id}),
               success: function(){console.log("succes");},
               dataType: "json",
               contentType : "application/json"
@@ -36,6 +49,16 @@
     </script>
 </body>
 
+
+<form id="tweet" action="/gettweet" method="GET">
+  <input type="tweet" name="tweet"  size="145">
+  <!--<input type="submit" value="Submit">-->
+ </form>
+
+<form id="label">
+  <input type="text" name="label"  size="30">
+  <!--<input type="submit" value="Submit">-->
+ </form>
 
 <div class="pair">
     <input type="checkbox" name="foo" value="bar" id=nul" onclick="fnul(0)"/><br />

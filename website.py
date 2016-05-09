@@ -128,11 +128,19 @@ def label():
 	logger.info(user)
 	logger.info(data['agreement'])
 	logger.info(data['label'])
+	logger.info(data['id'])
 
 	m.addlabel(id, user, data['label'])
 	m.addagreement(id, user, data['agreement'])
 
 	return "200"
+
+@app.route("/gettweet", methods=['GET'])
+def get_tweet():
+	logger.info("Get tweet")
+	import json
+	tweet, id = m.get_tweet(flask.ext.login.current_user.id)
+	return json.dumps({'tweet': tweet, "id": id})
 
 @app.route("/write", methods=['POST'])
 def write():
