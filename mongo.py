@@ -37,43 +37,7 @@ class mongo():
 		data = self.db[user].find({'label': {'$exists': False}})[0]
 		return data['tweets'], str(data['_id'])
 
-# 	def test():
-# 		cp_labels = None
-# 		for e in self.db.find({'user': user}):
-# 			cp_labels = e['labels']
-# 			print cp_labels
-# 			doc = [id, new_label]
-# 			cp_labels.append(doc)
-# 			print cp_labels
-# 		print(db.collection_names())
-# 		print db["usrC"]
-# 		clear(db_tweets)
-# 		clear(db["userA"])
-#
-# 		tweets = ["tweet 1", "tweet 2"]
-# 		for tweet in tweets:
-# 			db_tweets.insert_one({"tweets": tweet})
-#
-# 		users = ["userA", "userB"]
-#
-# 		dict = {}
-# 		for user in users:
-# 			check_user(db, user)
-#
-# 			for tweet in db_tweets.find():
-# 				print tweet
-# 				db[user].insert_one(tweet)
-#
-#
-# 		id = '5728b5fbc3dc0b18eb931bb6'
-# 		db["userA"].update({'_id': ObjectId(id)}, {'$set' : {'labels' : "anton"}})
-#
-# 		for e in db["userA"].find():
-# 			print e
-#
-# def add_user(db, user):
-# 	db[user]
-#
+
 
 
 def main():
@@ -96,16 +60,7 @@ def main():
 	id = 1
 	new_label = 'a'
 
-
-	# print collection.find_one()
-	# from bson.objectid import ObjectId
-	# id = '57277d4ac3dc0b23dae93729'
-	# document = collection.find_one({'_id': ObjectId(str(id))})
-	# print document
-	# collection.update({'_id': ObjectId(str(id))}, {'$set' : {'test' : 'test'}})
-	# document = collection.find_one({'_id': ObjectId(str(id))})
-	# print document
-
+	
 def clear(db):
 	db.delete_many({})
 
